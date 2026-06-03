@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Application Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Job Application Portal</h1>
+
+    <div class="job-card">
+        <h2>Software Developer</h2>
+        <p><b>Company:</b> Demo Technologies Pvt Ltd</p>
+        <p><b>Location:</b> Hyderabad</p>
+        <p><b>Experience:</b> 0-2 Years</p>
+        <p><b>Skills:</b> Java, SQL, HTML, CSS</p>
+        <p><b>Description:</b> We are looking for a Software Developer to build web applications.</p>
+    </div>
+
+    <div class="form-card">
+        <h2>Apply Now</h2>
+
+        <form id="applicationForm">
+            <input type="text" id="fullName" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email Address" required>
+            <input type="text" id="phoneNumber" placeholder="Phone Number" required>
+            <input type="text" id="qualification" placeholder="Qualification" required>
+            <input type="number" id="experience" placeholder="Years of Experience" required>
+            <input type="text" id="skills" placeholder="Skills" required>
+            <textarea id="coverLetter" placeholder="Cover Letter" required></textarea>
+
+            <button type="submit">Apply Now</button>
+        </form>
+
+        <p id="message"></p>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
