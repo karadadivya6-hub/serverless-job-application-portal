@@ -26,19 +26,18 @@ document.getElementById("applicationForm").addEventListener("submit", async func
 
         const result = await response.json();
 
-        let responseBody = result;
-
-        if (result.body) {
-            responseBody = JSON.parse(result.body);
-        }
+        console.log("API Response:", result);
 
         if (response.ok) {
+            const msg = result.message ||
+                        (result.body ? JSON.parse(result.body).message : "Application submitted successfully");
+
             message.style.color = "green";
-            message.innerText = responseBody.message;
+            message.innerText = msg;
             document.getElementById("applicationForm").reset();
         } else {
             message.style.color = "red";
-            message.innerText = responseBody.message || "Application failed";
+            message.innerText = result.message || "Application failed";
         }
 
     } catch (error) {
