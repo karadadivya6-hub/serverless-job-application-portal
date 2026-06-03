@@ -26,15 +26,15 @@ document.getElementById("applicationForm").addEventListener("submit", async func
 
         const result = await response.json();
 
-        let apiMessage = "Application submitted successfully";
+        let successMessage = "Application submitted successfully";
 
         if (result.body) {
             const body = JSON.parse(result.body);
-            apiMessage = body.message;
+            successMessage = body.message;
         }
 
         message.style.color = "green";
-        message.innerText = apiMessage;
+        message.innerText = successMessage;
 
         document.getElementById("applicationForm").reset();
 
