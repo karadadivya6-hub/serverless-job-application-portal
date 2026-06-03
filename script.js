@@ -26,16 +26,23 @@ document.getElementById("applicationForm").addEventListener("submit", async func
 
         const result = await response.json();
 
+        let responseBody = result;
+
+        if (result.body) {
+            responseBody = JSON.parse(result.body);
+        }
+
         if (response.ok) {
             message.style.color = "green";
-            message.innerText = result.message;
+            message.innerText = responseBody.message;
             document.getElementById("applicationForm").reset();
         } else {
             message.style.color = "red";
-            message.innerText = result.message;
+            message.innerText = responseBody.message || "Application failed";
         }
 
     } catch (error) {
+        console.error(error);
         message.style.color = "red";
         message.innerText = "Error submitting application";
     }
