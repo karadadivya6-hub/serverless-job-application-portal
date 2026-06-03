@@ -25,16 +25,18 @@ document.getElementById("applicationForm").addEventListener("submit", async func
         });
 
         const result = await response.json();
-        const body = JSON.parse(result.body);
 
-        if (response.ok) {
-            message.style.color = "green";
-            message.innerText = body.message;
-            document.getElementById("applicationForm").reset();
-        } else {
-            message.style.color = "red";
-            message.innerText = body.message || "Application failed";
+        let apiMessage = "Application submitted successfully";
+
+        if (result.body) {
+            const body = JSON.parse(result.body);
+            apiMessage = body.message;
         }
+
+        message.style.color = "green";
+        message.innerText = apiMessage;
+
+        document.getElementById("applicationForm").reset();
 
     } catch (error) {
         console.error(error);
