@@ -1,7 +1,7 @@
 import json
 import boto3
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table("JobApplications")
@@ -11,14 +11,11 @@ def lambda_handler(event, context):
         print("EVENT:", json.dumps(event))
 
         if "body" in event:
-            if isinstance(event["body"], str):
-                body = json.loads(event["body"])
-            else:
-                body = event["body"]
+            body = json.loads(event["body"]) if isinstance(event["body"], str) else event["body"]
         else:
             body = event
 
-        print("BODY:", body)
+        print("BODY:", json.dumps(body))
 
         required_fields = [
             "fullName",
@@ -31,10 +28,11 @@ def lambda_handler(event, context):
         ]
 
         for field in required_fields:
-            if field not in body or body[field] == "":
-                return create_response(400, {
-                    "message": f"{field} is required"
-                })
+            if field not in body or not str(body[field]).strip():
+                return create_response(
+                    400,
+                    {"message": f"{field} is required"}
+                )
 
         application_id = str(uuid.uuid4())
 
@@ -47,21 +45,25 @@ def lambda_handler(event, context):
             "experience": str(body["experience"]),
             "skills": str(body["skills"]),
             "coverLetter": str(body["coverLetter"]),
-            "appliedDate": datetime.utcnow().isoformat()
+            "appliedDate": datetime.now(timezone.utc).isoformat()
         }
 
         table.put_item(Item=item)
 
-        return create_response(200, {
-            "message": "Application submitted successfully",
-            "applicationId": application_id
-        })
+        return create_response(
+            200,
+            {
+                "message": "Application submitted successfully",
+                "applicationId": application_id
+            }
+        )
 
     except Exception as e:
         print("ERROR:", str(e))
-        return create_response(500, {
-            "message": "Error processing application"
-        })
+        return create_response(
+            500,
+            {"message": "Error processing application"}
+        )
 
 
 def create_response(status_code, body):
