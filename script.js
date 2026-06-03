@@ -25,13 +25,20 @@ document.getElementById("applicationForm").addEventListener("submit", async func
         });
 
         const result = await response.json();
+        const body = JSON.parse(result.body);
 
-        console.log(result);
-
-        message.innerText = JSON.stringify(result);
+        if (response.ok) {
+            message.style.color = "green";
+            message.innerText = body.message;
+            document.getElementById("applicationForm").reset();
+        } else {
+            message.style.color = "red";
+            message.innerText = body.message || "Application failed";
+        }
 
     } catch (error) {
         console.error(error);
+        message.style.color = "red";
         message.innerText = "Error submitting application";
     }
 });
